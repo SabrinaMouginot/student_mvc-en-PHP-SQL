@@ -12,9 +12,9 @@
             <td><?= $student['id'] ?></td>
             <td><?= $student['lastname'] ?></td>
             <td><?= $student['firstname'] ?></td>
-            <td><a href="">✎
-                </a></td>
+            <td><a href="index.php?table=student&id=<?= $student['id'] ?>&op=update">✎</a></td>
             <td><a href="index.php?table=student&id=<?= $student['id'] ?>&op=delete">❌</a></td>
+            </a></td>
         </tr>
     <?php } ?>
 </table>

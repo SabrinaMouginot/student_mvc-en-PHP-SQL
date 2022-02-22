@@ -3,8 +3,8 @@
 class Tag
 {
 
-    public int $id;
-    public string $name;
+    public ?int $id;
+    public ?string $name;
     public ?string $description;
     private $pdo;
 
@@ -40,11 +40,11 @@ class Tag
 
     public function update()
     {
-        $sql = 'update tag set name=:name, description=:description';
+        $sql = 'update tag set name=:name, description=:description where id=:id';
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':name', $this->name);
         $stmt->bindParam(':description', $this->description);
-        $stmt->bindParam(':id', $this->id);        
+        $stmt->bindParam(':id', $this->id);
         $stmt->execute();
         $this->select($this->id);
     }
@@ -55,6 +55,8 @@ class Tag
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+        echo $id;
+    
         $data = $stmt->fetch();
         $this->id = $data['id'];
         $this->name = $data['name'];

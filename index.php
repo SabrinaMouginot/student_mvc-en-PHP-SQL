@@ -23,7 +23,7 @@ switch ($table) {
         require('controleur/StudentController.php');
         break;
     case 'project';
-        require('controleur/ProjectController.php');
+        require('Controleur/ProjectController.php');
         break;
 }
 
