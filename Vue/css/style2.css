@@ -1,0 +1,31 @@
+menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+menu li {
+  float: left;
+  padding: 3px;
+  border: black 1px solid;
+}
+
+table th,
+table td {
+  border: black solid 1px;
+}
+
+strong {
+  color: red;
+}
+
+a,
+a:link,
+a:hover,
+a:visited,
+a:active {
+  color: inherit;
+  text-decoration: none;
+}
