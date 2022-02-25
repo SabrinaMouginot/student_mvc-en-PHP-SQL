@@ -10,15 +10,24 @@
         <a href="index.php?table=tag">
             <input type="button" value="tag">
         </a>
+        <a href="index.php?table=tag&op=insert">
+            <input type="button" value="&#x2795;">
+        </a>
     </form>
     <form>
         <a href="index.php?table=student">
             <input type="button" value="student">
         </a>
+        <a href="index.php?table=student&op=insert">
+            <input type="button" value="&#x2795;">
+        </a>
     </form>
     <form>
         <a href="index.php?table=project">
             <input type="button" value="project">
+        </a>
+        <a href="index.php?table=project&op=insert">
+            <input type="button" value="&#x2795;">
         </a>
     </form>
 </body>

@@ -2,12 +2,12 @@
 require('modele/Tag.php');
 
 $tag = new Tag();
-/*$tag->name = 'le nom du tag';
-$tag->description = '';
-$tag->insert();
-*/
+// $tag->name = 'le nom du tag';
+// $tag->description = '';
+// $tag->insert();
 
-//resetDb(); // Enlever le commentaire pour reset la liste
+
+// resetDb(); // Enlever le commentaire pour reset la liste
 
 // if ($op === 'delete') { // condition du delete
 //     if ($id > 0) {
@@ -48,6 +48,10 @@ switch ($op) {
     case 'update':
         require_once('vue/tag_update.php');
         break;
+    case 'insert':
+        $id=0;
+        require_once('vue/tag_update.php');
+        break;
     case 'liste':
         $tags = $tag->tous();
         require_once('vue/tag_liste.php');
@@ -59,11 +63,12 @@ switch ($op) {
         echo $_POST["description"];
         //2 filtrer valider ses données (FILTER_VALIDATE)
         $name = trim(filter_var($_POST["nom"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
+        $ok = true;
         if (mb_strlen($name) > 0) {
             echo ("$name is a valid name");
         } else {
             echo ("$name is not a valid name");
+            $ok = false;
         }
         $description = trim(filter_var($_POST["description"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
@@ -71,13 +76,20 @@ switch ($op) {
             echo ("$description is a valid description");
         } else {
             echo ("$description is not a valid description");
+            $ok = false;
         }
         //3 mettre à jour la BDD UPDATE
-        $tag = new Tag();
+        if($id>0)
         $tag->select($id);
-        $tag->name = $name;
-        $tag->description = $description;
-        $tag->update();
+        if ($ok) {
+            $tag->name = $name;
+            $tag->description = $description;
+            if($id>0)
+            $tag->update();
+            else
+            $tag->insert();
+        }
+
         //4 générer la réponse
         //4a sélectionner les données pour la réponse
         //4b sélectionner la vue pr la rép.

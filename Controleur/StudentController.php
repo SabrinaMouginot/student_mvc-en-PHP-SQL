@@ -3,25 +3,38 @@ require('modele/Student.php');
 
 $student = new Student();
 /*$student->lastname = 'le nom du student';
-$student->firstname = '';
+$student->firstname = 'le prénom du student';
 $student->insert();
 */
+
 //resetDb(); // Enlever le commentaire pour reset la liste
 
-// if ($op === 'delete ') { // condition du delete
+// if ($op === 'delete') { // condition du delete
 //     if ($id > 0) {
 //         $student->delete($id);
-//         $student = $student->tous();
+//         $students = $student->tous();
 //         require_once('vue/student_supprimer.php');
 //         require_once('vue/student_liste.php');
-
 //     }
 // } elseif ($op === 'update') {
-//     require_once('vue/vue_update.php');
+//     require_once('vue/student_update.php');
+// } elseif ($op === 'insert') {
+//     require_once('vue/student_liste.php');
+//     echo $_POST["firstname"]; //pour récupérer les données
+//     if (!filter_var($firstname, FILTER_VALIDATE_BOOLEAN) === false) { //pour filtrer valider les données
+//         echo ("$firstname is a valid firstname");
+//     } else {
+//         echo ("$firstname is not a valid firstname");
+//     }
+//     UPDATE student //mettre à jour la base de données
+//     SET firstname, Lastname=valeur2 
+//     WHERE some_colonne=some_value;
+
 // } else {
-//     $students = $student->tous(); // on récupère toute la liste des étudiants
-//     require_once('vue/student_liste.php'); // on affiche la liste des étudiants
-// }
+//     $students = $student->tous(); // on récupère toute la liste des tags
+//     require_once('vue/student_liste.php'); // on affiche la liste des tags
+// } // OU JE PEUX FAIRE UN SWITCH
+
 
 switch ($op) {
     case 'delete':
@@ -35,6 +48,10 @@ switch ($op) {
     case 'update':
         require_once('vue/student_update.php');
         break;
+    case 'insert':
+        $id = 0;
+        require_once('vue/student_update.php');
+        break;
     case 'liste':
         $students = $student->tous();
         require_once('vue/student_liste.php');
@@ -42,29 +59,63 @@ switch ($op) {
     case 'submit':
         // require_once('vue/student_liste.php');
         //1 recupérer les données du formulaire
-        echo $_POST["nom"];
-        echo $_POST["description"];
+        echo '<pre>';
+        var_dump($_POST);
+        echo ('</pre>');
+
+        if ($id > 0)
+            $student->select($id);
+
         //2 filtrer valider ses données (FILTER_VALIDATE)
-        $name = trim(filter_var($_POST["nom"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
-
-        if (mb_strlen($name) > 0) {
-            echo ("$name is a valid name");
+        $firstname = trim(filter_var($_POST["firstname"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        $ok = true;
+        if (mb_strlen($firstname) > 0) {
+            echo ("$firstname is a valid firstname");
         } else {
-            echo ("$name is not a valid name");
+            echo ("$firstname is not a valid firstname");
+            $ok = false;
         }
-        $description = trim(filter_var($_POST["description"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
 
-        if (mb_strlen($description) > 0) {
-            echo ("$description is a valid description");
+        $lastname = trim(filter_var($_POST["lastname"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+        if (mb_strlen($lastname) > 0) {
+            echo ("$lastname is a valid lastname");
         } else {
-            echo ("$description is not a valid description");
+            echo ("$lastname is not a valid lastname");
+            $ok = false;
         }
+
+        if (!filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL)) {
+            echo ("email invalide");
+            $ok = false;
+        } else {
+            $student->email = trim($_POST['email']);
+        }
+
+        if (!filter_input(INPUT_POST, 'school_year_id', FILTER_VALIDATE_INT)) {
+            echo ("school_year_id invalide");
+            $ok = false;
+        } else {
+            $student->school_year_id = intval($_POST['school_year_id']);
+        }
+
+        if (!filter_input(INPUT_POST, 'project_id', FILTER_VALIDATE_INT)) {
+            echo ("project_id invalide");
+            $ok = false;
+        } else {
+            $student->project_id = intval($_POST['project_id']);
+        }
+
+
         //3 mettre à jour la BDD UPDATE
-        $student = new Student();
-        $student->select($id);
-        $student->name = $name;
-        $student->description = $description;
-        $student->update();
+        if ($ok) {
+            $student->id = $id;
+            $student->firstname = $firstname;
+            $student->lastname = $lastname;
+            if ($id > 0)
+                $student->update();
+            else
+                $student->insert();
+        }
         //4 générer la réponse
         //4a sélectionner les données pour la réponse
         //4b sélectionner la vue pr la rép.
