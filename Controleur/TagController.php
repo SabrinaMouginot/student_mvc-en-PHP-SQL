@@ -1,4 +1,13 @@
 <?php
+
+// Un modèle (Model) contient les données à afficher.
+// Une vue (View) contient la présentation de l'interface graphique.
+// Un contrôleur (Controller) contient la logique concernant les actions effectuées par l'utilisateur.
+
+//  CRUD (create, read, update, delete) (créer, lire, mettre à jour, supprimer) est un acronyme 
+// pour les façons dont on peut fonctionner sur des données stockées. 
+
+
 require('modele/Tag.php');
 
 $tag = new Tag();
@@ -64,7 +73,7 @@ switch ($op) {
         //2 filtrer valider ses données (FILTER_VALIDATE)
         $name = trim(filter_var($_POST["nom"], FILTER_SANITIZE_FULL_SPECIAL_CHARS));
         $ok = true;
-        if (mb_strlen($name) > 0) {
+        if (mb_strlen($name) > 0) { //mb_strlen — Retourne la taille d'une chaîne
             echo ("$name is a valid name");
         } else {
             echo ("$name is not a valid name");

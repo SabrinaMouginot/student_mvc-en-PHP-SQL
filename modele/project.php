@@ -16,7 +16,7 @@ class Project
     public function tous()
     {
         $sql = "select id, name, description from project";
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql); 
         //requête sql $stmt = $this->pdo->prepare($sql); 
         // au dessus on cherche à comprendre la requête select id et l'optimiser,... puis en dessous on exécute 
         $stmt->execute();
